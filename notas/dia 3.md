@@ -67,4 +67,31 @@ HELM
 --------
 podman   <<<    Redhat
 
-ansible
+PODS:
+
+HEALTHCHECKS
+-------
+
+
+CLUSTER
+    Con cuantos servicios va a acabar?
+        BUFFFF !!!!!!                           --->>>   Service mess !
+                                                                VV
+        BUFFFF !!!!!!                           --->>>   Service mesh <<< Malla de servicios
+
+ISTIO / LINKERD
+    ---- >  1 linea de comandos ->> Man in the middle - HTTPs
+
+WP --- MARIADB
+----------
+
+POD1                       POD2
+-------------------------------------
+   WP                     MariaDB
+  VVV                       ^^    localhost
+INFILTRADO >>> HTTPS >>>> Infiltrado                           SIDECAR
+               mTLS
+IDENTIFICARSE             IDENTIFICARSE
+CERTIFICADO               CERTIFICADO
+
+MINIKUBE
