@@ -60,3 +60,6 @@ DNS: Carteles con las ubicaciones de:
 PLANTILLA DE POD: 
     Caractectisticas, aptitudes que tiene un trabajador
         IMAGEN DE CONTENEDOR
+        
+HELM
+    Chart <<< Plantilla

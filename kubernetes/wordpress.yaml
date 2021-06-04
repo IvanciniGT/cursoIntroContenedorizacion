@@ -1,0 +1,55 @@
+
+# El POD va a tener asociada una IP
+kind: Pod # ServiceAccount, Service, Ingress, PersistentVolume
+apiVersion: v1 # En que libreria (codigo) etá definido ese tipo de objeto
+
+metadata:
+    name: mi-wordpress-pod
+    labels:
+        app: wordpress
+    namespace: default
+    
+spec:
+    containers:
+        - name: wordpress
+          image: wordpress:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: mariadb
+            - name: WORDPRESS_DB_USER
+              valueFrom: 
+                configMapKeyRef:
+                    name: configuracion-mariadb
+                    key: user-name
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                    name: secretos-mariadb
+                    key: password-usuario
+            - name: WORDPRESS_DB_NAME
+              valueFrom: 
+                configMapKeyRef:
+                    name: configuracion-mariadb
+                    key: database-name
+
+
+---
+kind: Service
+apiVersion: v1
+
+metadata:
+    name: wordpress
+    namespace: default
+    
+spec:
+    ports:
+        - targetPort: 80
+          port: 80
+    selector:
+        app: wordpress
+        # No pongo el nombre del pod que da ese servicio
+        # Esto permitiria desde cualquier sitio del cluster poder llamar a la direccion: 
+        #  mariadb:4000 ----> mi-maria-db-pod:3306
+        # Trabajamos con etiquetas
