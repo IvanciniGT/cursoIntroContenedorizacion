@@ -1,0 +1,79 @@
+kind: ConfigMap
+apiVersion: v1
+
+metadata:
+    name: configuracion-mariadb
+    namespace: default
+
+data:
+    user-name: usuario
+    database-name: pruebadb
+    
+---
+kind: Secret
+apiVersion: v1
+
+metadata:
+    name: secretos-mariadb
+    namespace: default
+
+data:
+    password-root: cGFzc3dvcmQtcm9vdA==
+    password-usuario: cGFzc3dvcmQtdXN1YXJpbwo=
+    
+---
+# El POD va a tener asociada una IP
+kind: Pod # ServiceAccount, Service, Ingress, PersistentVolume
+apiVersion: v1 # En que libreria (codigo) etá definido ese tipo de objeto
+
+metadata:
+    name: mi-maria-db-pod
+    labels:
+        app: mariadb
+    namespace: default
+    
+spec:
+    containers:
+        - name: mariadb
+          image: mariadb:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                    name: secretos-mariadb
+                    key: password-root
+            - name: MARIADB_USER
+              valueFrom: 
+                configMapKeyRef:
+                    name: configuracion-mariadb
+                    key: user-name
+            - name: MARIADB_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                    name: secretos-mariadb
+                    key: password-usuario
+            - name: MARIADB_DATABASE
+              valueFrom: 
+                configMapKeyRef:
+                    name: configuracion-mariadb
+                    key: database-name
+---
+kind: Service
+apiVersion: v1
+
+metadata:
+    name: mariadb
+    namespace: default
+    
+spec:
+    ports:
+        - targetPort: 3306
+          port: 4000 # 3306
+    selector:
+        app: mariadb
+        # No pongo el nombre del pod que da ese servicio
+        # Esto permitiria desde cualquier sitio del cluster poder llamar a la direccion: 
+        #  mariadb:4000 ----> mi-maria-db-pod:3306
+        # Trabajamos con etiquetas

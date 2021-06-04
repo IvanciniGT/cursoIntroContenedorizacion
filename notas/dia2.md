@@ -89,7 +89,7 @@ Kubernetes -> Cluster - Va en cada maquina
         kubelet                                                                             |
         Contenedores:                                                                       |
             api-server              Comunicarnos con Kubernetes                             |
-            scheduller              Donde instalo un contenedor                             |
+            scheduller              Donde instalo un pod                             |
             etcd                    Base de datos Kubernetes                                |
             controllerManager       Toda la gestion posterior runtime                       |
             coreDNS                 DNS interno para los servicios del cluster              |
@@ -132,7 +132,7 @@ PETICION DE VOLUMEN PERSISTENTE: MySQL, necesito 30Gbs rapiditos redundantes  <<
 INGRESS: nginX  <<<<< KUBERNETES    ||||||    OPENSHIFT    >>>>  ROUTE
 
 SERVICIO: Tiene su propia dirección IP: 172.17.1.100:3306 > LB IP Contenedor(es):3306. Esta IP, es la que tiene asociado un Nombre DNS
-    Me ofrece un nombre con el que poder identificar "un" "contenedor"
+    Me ofrece un nombre con el que poder identificar "un" "pod"
     Balanceador de carga que me regala Kubernetes: Reglas netFilter < programa montado dentro del KERNEL DE Linux
 
 HORIZONTAL_POD_AUTOSCALER:
