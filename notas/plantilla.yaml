@@ -1,0 +1,37 @@
+---
+# Comentarios
+Nodo 1
+---
+Nodo 2
+---
+Nodo 3
+---
+2 tipos de nodos:
+    Escalar: # Son valores simples
+        numero: 17
+        decimal: -9.23
+        logico: true # TRUE True
+        logico: false # FALSE False
+        texto1: Yo soy " ' # un texto
+        texto2: 'Yo soy un '' texto'
+        texto3: "Yo soy un \" \\ \n \t texto"
+    Agrupacion:
+        listas de nodos:
+            - item1
+            - item2
+            - item3
+            - item4
+        mapas:
+            clave1: valor
+            clave2: valor
+---
+7
+---
+- 3
+- hola
+- true
+---
+- - Hola
+  - Amigo
+- - Como estas?
+- Bien
