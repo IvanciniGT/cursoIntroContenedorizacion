@@ -70,7 +70,7 @@ metadata:
 spec:
     ports:
         - targetPort: 3306
-          port: 4000 # 3306
+          port: 3306 # 3306
     selector:
         app: mariadb
         # No pongo el nombre del pod que da ese servicio
