@@ -1,42 +1,56 @@
+# Un deployment igual que un STATEFULSET: 
+# ESCALABILIDAD + ALTA DISPONIBILIDAD
 
 # El POD va a tener asociada una IP
-kind: Pod # ServiceAccount, Service, Ingress, PersistentVolume
-apiVersion: v1 # En que libreria (codigo) etá definido ese tipo de objeto
+kind: Deployment # ServiceAccount, Service, Ingress, PersistentVolume
+apiVersion: apps/v1 # En que libreria (codigo) etá definido ese tipo de objeto
 
 metadata:
-    name: mi-wordpress-pod
-    labels:
-        app: wordpress
-    namespace: default
-    
+    name: wordpress-deployment
+
 spec:
-    containers:
-        - name: wordpress
-          image: wordpress:latest
-          ports:
-            - containerPort: 80
-          env:
-            - name: WORDPRESS_DB_HOST
-              value: mariadb            
-            - name: WORDPRESS_DB_PORT
-              value: 3306
-            - name: WORDPRESS_DB_USER
-              valueFrom: 
-                configMapKeyRef:
-                    name: configuracion-mariadb
-                    key: user-name
-            - name: WORDPRESS_DB_PASSWORD
-              valueFrom: 
-                secretKeyRef:
-                    name: secretos-mariadb
-                    key: password-usuario
-            - name: WORDPRESS_DB_NAME
-              valueFrom: 
-                configMapKeyRef:
-                    name: configuracion-mariadb
-                    key: database-name
+    replicas: 3
+    
+    selector:
+        matchLabels:
+            app: wordpress
+    
+    template:    
+            metadata:
+                labels:
+                    app: wordpress
+                namespace: default
+                
+            spec:
+                containers:
+                    - name: wordpress
+                      image: wordpress:latest
+                      ports:
+                        - containerPort: 80
+                      env:
+                        - name: WORDPRESS_DB_HOST
+                          value: mariadb            
+                        - name: WORDPRESS_DB_USER
+                          valueFrom: 
+                            configMapKeyRef:
+                                name: configuracion-mariadb
+                                key: user-name
+                        - name: WORDPRESS_DB_PASSWORD
+                          valueFrom: 
+                            secretKeyRef:
+                                name: secretos-mariadb
+                                key: password-usuario
+                        - name: WORDPRESS_DB_NAME
+                          valueFrom: 
+                            configMapKeyRef:
+                                name: configuracion-mariadb
+                                key: database-name
 
-
+---
+# Deployment:
+#    - plantilla de pod
+#    - replicas
+    
 ---
 kind: Service
 apiVersion: v1
