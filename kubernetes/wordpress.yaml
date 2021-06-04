@@ -17,7 +17,9 @@ spec:
             - containerPort: 80
           env:
             - name: WORDPRESS_DB_HOST
-              value: mariadb
+              value: mariadb            
+            - name: WORDPRESS_DB_PORT
+              value: 3306
             - name: WORDPRESS_DB_USER
               valueFrom: 
                 configMapKeyRef:
